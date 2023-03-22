@@ -1,32 +1,28 @@
 import { Request, Response } from "express";
 import Users from "../model/user-model";
 
-async function listAllUsers(req: Request, res: Response): Promise<Response> {
+async function listAllUsers(req: Request, res: Response) {
   try {
     const users = await Users.findAll();
 
-    return res.status(201).json(users);
+    res.status(201).json(users);
   } catch (error) {
-    return res
-      .status(500)
-      .send({ message: "Erro ao listar os usuários!", error });
+    res.status(500).send({ message: "Erro ao listar os usuários!", error });
   }
 }
 
-async function listOneUser(req: Request, res: Response): Promise<Response> {
+async function listOneUser(req: Request, res: Response) {
   try {
     const idUser = req.params.id;
     const user = await Users.findByPk(idUser);
 
-    return res.status(201).json(user);
+    res.status(201).json(user);
   } catch (error) {
-    return res
-      .status(500)
-      .send({ message: "Erro ao listar o usuário!", error });
+    res.status(500).send({ message: "Erro ao listar o usuário!", error });
   }
 }
 
-async function authenticate(req: Request, res: Response): Promise<Response> {
+async function authenticate(req: Request, res: Response) {
   try {
     const { email, senha } = req.body;
     const user = await Users.findOne({
@@ -37,14 +33,12 @@ async function authenticate(req: Request, res: Response): Promise<Response> {
     });
 
     if (!user) {
-      return res.status(401).json({ message: "Credenciais inválidas" });
+      res.status(401).json({ message: "Credenciais inválidas" });
     }
 
-    return res.json(user);
+    res.json(user);
   } catch (error) {
-    return res
-      .status(500)
-      .send({ message: "Erro ao tentar autenticação!", error });
+    res.status(500).send({ message: "Erro ao tentar autenticação!", error });
   }
 }
 
